@@ -1,0 +1,19 @@
+.list-group-naked .list-group-item{
+    background-color: transparent;
+    border: none;
+}
+.list-group-item-action:focus,
+.list-group-item-action:hover {
+    background-color: #eeeeee;
+}
+.shadow-textarea textarea.form-control::placeholder {
+    font-weight: 300;
+}
+.shadow-textarea textarea.form-control {
+    padding-left: 0.8rem;
+}
+.exampleFormControlTextarea6
+{
+    width: 10px;
+  height: 150px
+}
