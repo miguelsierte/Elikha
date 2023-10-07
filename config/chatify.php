@@ -7,7 +7,7 @@ return [
     |-------------------------------------
     */
     'name' => env('CHATIFY_NAME', 'Chatify Messenger'),
-
+    
     /*
     |-------------------------------------
     | The disk on which to store added
@@ -25,11 +25,14 @@ return [
         'prefix' => env('CHATIFY_ROUTES_PREFIX', 'chatify'),
         'middleware' => env('CHATIFY_ROUTES_MIDDLEWARE', ['web','auth']),
         'namespace' => env('CHATIFY_ROUTES_NAMESPACE', 'Chatify\Http\Controllers'),
+     
+
     ],
     'api_routes' => [
         'prefix' => env('CHATIFY_API_ROUTES_PREFIX', 'chatify/api'),
         'middleware' => env('CHATIFY_API_ROUTES_MIDDLEWARE', ['api']),
         'namespace' => env('CHATIFY_API_ROUTES_NAMESPACE', 'Chatify\Http\Controllers\Api'),
+        'namespace' => env('CHATIFY_API_ROUTES_NAMESPACE', 'App\Http\Controllers\vendor\Chatify\Api'),
     ],
 
     /*
