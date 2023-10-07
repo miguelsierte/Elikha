@@ -101,6 +101,9 @@ Route::middleware(['auth', 'role:Admin'])->group(function()
     Route::get('/verifyartists', [HomeController::class, 'verifyartists'])->name('verifyartists');
     Route::post('/approveartists/{id}', [HomeController::class, 'approveartists'])->name('approveartists');
     Route::post('/rejectartists', [HomeController::class, 'rejectartists'])->name('rejectartists');
+    Route::get('/highlights', [HomeController::class, 'highlights'])->name('highlights');
+    Route::post('/highlights', [HomeController::class, 'highlightsstore'])->name('highlights');
+
 
 });
 

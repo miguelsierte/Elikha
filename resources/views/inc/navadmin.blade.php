@@ -90,7 +90,11 @@
         </a>
       </li>
       <li>
+
+        <a href="{{url('highlights')}}" class="nav-link <?php if($page=='highlights'){echo 'active';}?>">
+
         <a href="{{url('posts')}}" class="nav-link <?php if($page=='posts'){echo 'active';}?>">
+
           <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#highlights"/></svg>
           Highlights
         </a>

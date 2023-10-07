@@ -37,17 +37,21 @@
             <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
             <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
           </div>
+          @if ($highlightsData)
           <div class="carousel-inner">
             <div class="carousel-item active">
-              <img src="images/carousel1.png" class="carousel-image" alt="...">
+              <img src="{{ asset('storage/images/' . $highlightsData->highlight1) }}" class="carousel-image" alt="...">
             </div>
             <div class="carousel-item">
-              <img src="images/carousel2.png" class="carousel-image" alt="...">
+              <img src="{{ asset('storage/images/' . $highlightsData->highlight2) }}" class="carousel-image" alt="...">
             </div>
             <div class="carousel-item">
-              <img src="images/pic3.png" class="carousel-image " alt="...">
+              <img src="{{ asset('storage/images/' . $highlightsData->highlight3) }}" class="carousel-image " alt="...">
             </div>
           </div>
+          @else
+            <p>No highlights data available.</p>
+          @endif
         </div>
       </div>
       <script>

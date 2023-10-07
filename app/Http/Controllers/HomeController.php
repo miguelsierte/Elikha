@@ -15,6 +15,8 @@ use App\Mail\ArtworkApprovedMail;
 use App\Mail\ArtistApproved;
 use App\Mail\ArtistRejected;
 use App\Models\Verify;
+use Illuminate\Support\Facades\Storage;
+
 
 class HomeController extends Controller
 {
@@ -191,6 +193,68 @@ $artwork->save();
 
 return back()->with('reject', 'Artwork rejected with remarks.');
 }
+public function highlights()
+    {
+        $highlightsData = DB::table('highlights')->first(); // Assuming there's only one set of highlights
+
+        return view('admin.highlights', compact('highlightsData'));
+    }
+
+    public function highlightsstore(Request $request)
+{
+    // Validate the request
+    $request->validate([
+        'highlight1' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        'highlight2' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        'highlight3' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+    ]);
+
+    // Define the path for storing images
+    $imagePath = 'public/images';
+
+    // Initialize an array to store the paths of the uploaded images
+    $highlightPaths = [];
+
+    // Loop through and upload each image
+    foreach (['highlight1', 'highlight2', 'highlight3'] as $highlightField) {
+        if ($request->hasFile($highlightField)) {
+            $image = $request->file($highlightField);
+
+            // Generate a unique filename
+            $filename = time() . '_' . $image->getClientOriginalName();
+
+            // Store the image in the specified directory
+            $image->storeAs($imagePath, $filename);
+
+            // Add the image path to the array
+            $highlightPaths[$highlightField] = $filename;
+        }
+    }
+
+    // Retrieve the existing highlights
+    $existingHighlights = DB::table('highlights')->first(); // Assuming there's only one set of highlights
+
+    if ($existingHighlights) {
+        // Delete the old images if they exist
+        foreach (['highlight1', 'highlight2', 'highlight3'] as $highlightField) {
+            if (isset($highlightPaths[$highlightField])) {
+                Storage::delete($imagePath . '/' . $existingHighlights->$highlightField);
+            }
+        }
+
+        // Update the existing record with the new image paths
+        DB::table('highlights')
+            ->where('id', $existingHighlights->id)
+            ->update($highlightPaths);
+    } else {
+        // Insert a new record with the new image paths
+        DB::table('highlights')->insert($highlightPaths);
+    }
+
+    // Redirect back with a success message
+    return back()->with('success', 'Highlights uploaded successfully.');
+}
+
     public function support()
     {
         $pendingTicketCount = Ticket::where('status','0')->count();

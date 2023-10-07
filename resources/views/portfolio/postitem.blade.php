@@ -52,31 +52,27 @@
     <input required type="text" name="dimension" id="dimension" class="form-control" placeholder="Height x Width in cm" ><br>
     <h6>Starting Bid</h6>
     <input required type="text" name="start_price" id="start_price" class="form-control" placeholder="Starting Bid in Peso" ><br>
-    <h6>Starting date of Bidding</h6>
-      <div class="row">
-          <div class="col-md-4">
-              <input type="date" class="form-control" name="start_date" id="start_date" style="width: 120px"/>
-          </div>
-      </div>
-   <h6>Ending date of Bidding</h6>
-      <div class="row">
-          <div class="col-md-4">
-              <input type="date" class="form-control" name="end_date" id="end_date" style="width: 120px" />
-          </div>
-      </div>
+    <h6>Starting date and time of Bidding</h6>
+<div class="row">
+    <div class="col-md-4">
+        <input type="datetime-local" class="form-control" name="start_date" id="start_date" style="width: 220px"/>
+    </div>
+</div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<h6>Ending date and time of Bidding</h6>
+<div class="row">
+    <div class="col-md-4">
+        <input type="datetime-local" class="form-control" name="end_date" id="end_date" style="width: 220px" />
+    </div>
+</div>
 
-   <script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script>
     document.addEventListener('DOMContentLoaded', function(e) {
-    $('[name="date"]')
-        .datepicker({
-            format: 'dd/mm/yyyy'
-        })
-        .on('changeDate', function(e) {
-            // do somwthing here
-        });
-});
+        // No need for datepicker or timepicker initialization.
+    });
+
 .fa {
     position: absolute;
     right: 25px;
@@ -92,13 +88,14 @@
  
  <div class="col">
   <h6>Category</h6>
-      <select type="type" name="category_id" id="category_id" class="form-control" required>
-      <option value="1">Pop Art</option>
-      <option value="2">Realism</option>
-      <option value="3">Portrait</option>
-      <option value="4">Abstract</option>
-      <option value="5">Expressionism</option>
-      <option value="6">Photorealism</option>
+  <select type="type" name="category_id" id="category_id" class="form-control" required>
+  <option value="1">Pop Art</option>
+  <option value="2">Realism</option>
+  <option value="3">Portrait</option>
+  <option value="4">Abstract</option>
+  <option value="5">Expressionism</option>
+  <option value="6">Impressionism</option>
+  <option value="7">Photorealism</option>
       </select>
 
       <style>
