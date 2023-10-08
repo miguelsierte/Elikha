@@ -10,6 +10,11 @@ use App\Models\Verify;
 
 class VerifyController extends Controller
 {
+    public function show($id)
+{
+    $verifies = Verify::findOrFail($id); // Replace 'findOrFail' with your preferred method for fetching data
+    return view('verification.show', compact('verifies'));
+}
     public function artistVerify()
     {
         return view('artist.verify');

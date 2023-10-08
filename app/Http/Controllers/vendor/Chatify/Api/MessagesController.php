@@ -299,13 +299,17 @@ class MessagesController extends Controller
     public function sharedPhotos(Request $request)
     {
         $images = Chatify::getSharedPhotos($request['user_id']);
-
+        $imageUrls = [];
+    
         foreach ($images as $image) {
-            $image = asset(config('chatify.attachments.folder') . $image);
+            // Construct the full URL for each image and add it to the $imageUrls array
+            $imageUrl = asset(config('chatify.attachments.folder') . $image);
+            $imageUrls[] = $imageUrl;
         }
-        // send the response
+    
+        // send the response with the accumulated image URLs
         return Response::json([
-            'shared' => $images ?? [],
+            'shared' => $imageUrls,
         ], 200);
     }
 

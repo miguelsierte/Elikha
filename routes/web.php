@@ -72,7 +72,7 @@ Route::middleware(['auth', 'role:Artist'])->group(function()
     Route::get('/artistVerify', [VerifyController::class, 'artistVerify']);
     Route::post('/artistVerify', [VerifyController::class, 'verifstore'])->name('artistVerify');
     Route::get('/verify-email', 'VerificationController@verifyEmail')->name('verify.email');
-
+    Route::get('/verification/{id}', 'VerifyController@show')->name('verification.show');
 
     
 });
