@@ -35,8 +35,16 @@ class Artworks extends Model
     }
 
    
+
     public function bids()
     {
-        return $this->hasMany(Bid::class, 'artwork_id'); // Specify the correct foreign key column name
+        return $this->hasMany(Bid::class, 'artwork_id');
     }
+    
+    public function getLeadBidAttribute()
+    {
+        return $this->bids->max('amount');
+    }
+    
+    
 }

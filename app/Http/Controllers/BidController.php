@@ -12,9 +12,19 @@ class BidController extends Controller
 {
     public function placeBid(Request $request, $artworkId)
 {
+    // Validate the bid amount
+    $request->validate([
+        'amount' => 'required|numeric|min:1',
+    ]);
+
     $user = Auth::user();
     $amount = $request->input('amount');
     $artwork = Artworks::find($artworkId);
+
+    // Check if the artwork exists
+    if (!$artwork) {
+        return redirect()->back()->with('error', 'Artwork not found.');
+    }
 
     // Check if the bid amount is lower than the current bid or artwork price
     if ($amount < $artwork->start_price || $amount < $artwork->bids->max('amount')) {
@@ -28,9 +38,9 @@ class BidController extends Controller
     $bid->amount = $amount;
     $bid->save();
 
-    // Additional logic: Notify the user, update artwork status, etc.
-
-    return redirect()->back()->with('success', 'Bid placed successfully!');
+    // Redirect back with success or error message
+    return back()->with('success', 'Bid placed successfully!');
 }
+
 
 }

@@ -125,6 +125,8 @@ class ArtworkController extends Controller
         'totalBids' => $totalBids,
     ]);
 }
+
+
     
     
 

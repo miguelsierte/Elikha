@@ -178,6 +178,29 @@ public function buyerhome()
     return view('buyer.buyerhome', compact('user', 'artwork'));
 }
 
+public function updateBuyerSettings(Request $request)
+{
+    
+        # Validation
+        $request->validate([
+            'old_password' => 'required',
+            'new_password' => 'required|confirmed',
+        ]);
+
+
+        #Match The Old Password
+        if(!Hash::check($request->old_password, auth()->user()->password)){
+            return back()->with("error", "Old Password Doesn't match!");
+        }
+
+
+        #Update the new Password
+        User::whereId(auth()->user()->id)->update([
+            'password' => Hash::make($request->new_password)
+        ]);
+
+        return back()->with("status", "Password changed successfully!");
+}
 
     public function shopbuyer(Request $request)
 {
@@ -482,7 +505,7 @@ public function photorealism(Request $request)
     return view('buyer.photorealism', compact('user', 'artwork', 'highlightsData'));
 }
 
-    public function cart()
+    public function buyercart()
     {
         $user = Auth::user();
 
@@ -494,6 +517,40 @@ public function photorealism(Request $request)
 
         return view('buyer.Nav', compact('user'));
     }
+    public function buyersetting()
+    {
+        $user = Auth::user();
+
+        return view('buyer.setting', compact('user'));
+    }
+
+public function addToCart(Request $request, $artworkId)
+{
+    // Retrieve artwork details based on $artworkId
+    $artwork = Artworks::find($artworkId);
+
+    // Check if the artwork is "For Sale" or "Auctioned"
+    if ($artwork && in_array($artwork->status, ['For Sale', 'Auctioned'])) {
+        // Add the artwork to the user's cart (you need to implement this logic)
+        // Redirect back to the shop page or cart page
+    } else {
+        // Artwork is not available for purchase, handle accordingly (e.g., show error message)
+    }
+}
+
+public function updateCart(Request $request, $artworkId)
+{
+    // Update the quantity or other details of the artwork in the cart
+    // Save the updated cart state to the database or session
+    // Redirect back to the cart page
+}
+
+public function removeFromCart($artworkId)
+{
+    // Remove the artwork from the user's cart
+    // Save the updated cart state to the database or session
+    // Redirect back to the cart page
+}
 
     public function portfolio($id)
 {
@@ -509,6 +566,7 @@ public function photorealism(Request $request)
 
     return view('buyer.portfolio', compact('artist', 'artwork', 'user'));
 }
+    
 
     public function buyerVerify()
     {
@@ -569,14 +627,65 @@ public function photorealism(Request $request)
                 // Optionally, you can store the file paths in an array.
                 $uploadedFilePaths[] = 'images/' . $filename;
             }
-        }
+         }
     
         // Optionally, you can save the file paths to a database or perform other actions.
     
          // Redirect or return a response as needed.
+     return redirect()->to('profile')->with('success', 'Profile updated successfully!');
+    }
 
+
+    public function editProfilePicture()
+    {
+        $user = Auth::user();
+        return view('buyer.editprofilepicture', compact('user'));
+    }
     
 
-    return redirect()->to('profile')->with('success', 'Profile updated successfully!');
+    public function updateProfilePicture(Request $request)
+    {
+        // Validate the request
+        $request->validate([
+            'image' => 'required|image|mimes:jpg,jpeg,png|max:1024', // Max 1MB
+        ]);
+    
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+    
+            // Validate image file type and size
+            $allowedFileTypes = ['jpg', 'jpeg', 'png'];
+            $maxFileSize = 1024 * 1024; // 1MB
+    
+            $extension = $image->getClientOriginalExtension();
+    
+            if (!in_array($extension, $allowedFileTypes)) {
+                return redirect()->back()->withErrors(['image' => 'Invalid image file type. Please upload a jpg, jpeg, or png file.']);
+            }
+    
+            if ($image->getSize() > $maxFileSize) {
+                return redirect()->back()->withErrors(['image' => 'The image file size must be less than 1MB.']);
+            }
+    
+            // Generate a unique filename for the image
+            $filename = time() . '.' . $extension;
+    
+            // Store the image in the public storage directory
+            $image->move(public_path('images'), $filename);
+    
+            // Update the user's image URL in the database
+            Auth::user()->update([
+                'image' => $filename, // Save only the filename without the path
+            ]);
+            
+            return redirect()->route('buyer.settings')->with('success', 'Profile picture updated successfully!');
+        }
+    
+        return redirect()->back()->withErrors(['image' => 'Failed to update profile picture. Please try again.']);
     }
-}
+    
+
+    }
+
+

@@ -26,14 +26,15 @@
         </ul>
         
         <li class="nav-item ">
-          <button class="btn button-profile" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+          <button class="btn profile-image-button" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+            
             <div class="profile-image-button">
-                @if($user->image)
-                    <img src="{{ asset('images/'.$user->image) }}" class="profile-image-buyer rounded-circle">
-                @else
-                    <div class="text-center">{{ $user->name[0] }}</div>
-                @endif
-            </div>
+              @if($user->image)
+                  <img src="{{ asset('images/'.$user->image) }}" class="profile-image-buyer rounded-circle">
+              @else
+                  <div class="text-center">{{ $user->name[0] }}</div>
+              @endif
+          </div>
         </button>
         </li>
       </div>
@@ -79,14 +80,14 @@ li::marker {
   <div class="offcanvas-body text-center">
     <div class="row justify-content-center">
       <div class="profile-image">
-          @if($user->image)
-              <img src="{{ asset('images/'.$user->image) }}" class="profile-image-buyer rounded-circle">
-          @else
-              <div class="profile-image-buyer rounded-circle">
-                  <div class="text-center">{{ $user->name[0] }}</div>
-              </div>
-          @endif
-      </div>
+        @if($user->image)
+            <img src="{{ asset('storage/images/'.$user->image) }}" class="profile-image-buyer rounded-circle">
+        @else
+            <div class="profile-image-buyer rounded-circle">
+                <div class="text-center">{{ $user->name[0] }}</div>
+            </div>
+        @endif
+    </div>
       <h3 class="m-b-0">{{ Auth::user()->name }}</h3>
   </div>
   <style>
@@ -117,8 +118,8 @@ li::marker {
   
     <div class="row">
       <div class="d-grid gap-2 col-6 mx-auto">
-        <button class="btn btn-hover" type="button">Setting</button>
-        <button class="btn btn-hover" type="button">My Cart</button>
+        <a href="{{ route('buyer.setting') }}" class="btn btn-hover" role="button">Settings</a>
+        <a href="{{ route('cart.show') }}" class="btn btn-hover" role="button">My Cart</a>
         <a class="dropdown-item" href="{{ route('buyerLogout') }}"
                     onclick="event.preventDefault();
                     document.getElementById('logout-form').submit();">
@@ -129,6 +130,7 @@ li::marker {
                     @method('delete')
                 </form>
       </div>
+      
       
     </div>
   </div>
