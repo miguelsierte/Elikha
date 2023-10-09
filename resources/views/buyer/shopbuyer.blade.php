@@ -14,12 +14,12 @@
     </div>
 @endif
 
-<div class="container shop-container">
+<div class="container shop-container ">
   <div class="row row0 d-flex justify-content-center align-items-center">
     <div class="row row-container1 shadow-1-strong d-flex rounded mb-4 justify-content-center align-items-center ">
       <div class="col justify-content-center align-items-center ">
         <div class="content text-md-left">
-          <h5 style="font-size: 40px; font-family: 'Helvetica Nue';">Get the Latest Art Trends</h5> <br>
+          <h5 style="font-size: 40px; font-family: 'Arial', sans-serif;">Get the Latest Art Trends</h5> <br>
         </div>
         
       <style>
@@ -48,21 +48,17 @@
             <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
             <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
           </div>
-          @if ($highlightsData)
           <div class="carousel-inner">
             <div class="carousel-item active">
-              <img src="{{ asset('storage/images/' . $highlightsData->highlight1) }}" class="carousel-image" alt="...">
+              <img src="images/carousel1.png" class="carousel-image" alt="...">
             </div>
             <div class="carousel-item">
-              <img src="{{ asset('storage/images/' . $highlightsData->highlight2) }}" class="carousel-image" alt="...">
+              <img src="images/carousel2.png" class="carousel-image" alt="...">
             </div>
             <div class="carousel-item">
-              <img src="{{ asset('storage/images/' . $highlightsData->highlight3) }}" class="carousel-image " alt="...">
+              <img src="images/pic3.png" class="carousel-image " alt="...">
             </div>
           </div>
-          @else
-            <p>No highlights data available.</p>
-          @endif
         </div>
       </div>
       <script>
@@ -232,18 +228,7 @@
     </div>
     <div class="row-md-8 scrollable-row" style="padding-left: 20px">
         <!-- Content for the scrollable right column/ arts goes here -->
-        <div class="row mt-4"> 
-          <!-- Display the error message here -->
-          @if(session('error'))
-          <div class="alert alert-danger">
-              {{ session('error') }}
-          </div>
-      @endif
-      @if(session('success'))
-      <div class="alert alert-success">
-          {{ session('success') }}
-      </div>
-  @endif
+        <div class="row mt-4">
           @foreach($artwork as $artworks)
     @php
         $currentDateTime = now(); // Get the current date and time
@@ -309,16 +294,10 @@
                     $leadBidAmount = $artworks->bids->max('amount');
 
                     $endDate = \Carbon\Carbon::parse($artworks->end_date);
-    $currentDate = \Carbon\Carbon::now();
-    $duration = $currentDate->diffForHumans($endDate, [
-        'parts' => 3, 
-        'join' => true, 
-        // 'short' => true, // Use a shorter format (e.g., 1h 30m 15s)
-    ]);
-    $duration = str_replace(['before', 'ago'], '', $duration);
-@endphp
-
-<p class="list-group-item"><strong>Duration: </strong>{{ $duration }} left</p>
+                    $currentDate = \Carbon\Carbon::now();
+                    $daysLeft = $currentDate->diffInDays($endDate);
+                @endphp
+                <p class="list-group-item"><strong>Duration: </strong>{{ $daysLeft }} days left</p>
                 <p><strong>Lead Bid: </strong> ₱{{ $artworks->bids->max('amount') }}</p>
                       <p><strong>Description:</strong></p>
                       <p>{{ $artworks->description }}</p>
@@ -326,25 +305,36 @@
                           <div class="d-inline">
                               <form id="bidForm_{{ $artworks->id }}" action="{{ route('place.bid', ['artworkId' => $artworks->id]) }}" method="POST">
                                 @csrf 
+                                <!-- Display the error message here -->
+                                @if(session('error'))
+                                    <div class="alert alert-danger">
+                                        {{ session('error') }}
+                                    </div>
+                                @endif
+                                      
                                 <div class="form-group">
                                   <label for="bidAmount_{{ $artworks->id }}">Enter the Amount:</label>
+
                                   <input type="number" class="form-control" id="bidAmount_{{ $artworks->id }}" name="amount" required>
-                              </div>
-                              <div class="row">
-                                <div class="text-end">
-                                  <br>
+                              </div><br>
                               <button type="submit" class="btn btn-dark">Place Bid</button>
                           </form>
                           <form action="{{ route('cart.add') }}" method="POST">
                             @csrf
                             <input type="hidden" name="artwork_id" value="{{ $artworks->id }}">
-                            <input type="hidden" name="price" value="{{ $artworks->price }}">
                             <button type="submit" class="btn btn-outline-dark buttonaddtocart">Add to Cart</button>
+                            @if(session('success'))
+                          <div class="alert alert-success">
+                              {{ session('success') }}
                           </div>
-                      </div>
+                      @endif
+                      
+                      @if(session('error'))
+                          <div class="alert alert-danger">
+                              {{ session('error') }}
+                          </div>
+                      @endif
                         </form>
-                           
-                        
                               
                             
                           <!-- Modal for Bidding -->
