@@ -48,7 +48,7 @@
                     <div class="col-lg-4 col-sm-6" style="margin-bottom: 20px">
                         <div class="container artwork-container">
                             <div class="image-container">
-                                <img src="{{ asset('artworks/'.$artworks->image) }}" alt="" class="artwork-buyerview" style="object-fit: cover; border-radius: 10%;">
+                                <img src="{{ asset('storage/attachment/'.$artworks->image) }}" alt="" class="artwork-buyerview" style="object-fit: cover; border-radius: 10%;">
                                 <div class="overlay">
                                     <p class="overlay-text">{{ $artworks->title }}</p><br>
                                     <button type="button" class="btn btn-hover text-white" data-toggle="modal" data-target="#ARTMODAL_{{ $artworks->id }}">
@@ -71,7 +71,7 @@
                               <div class="row">
                                 <div class="col-6">
                                   <div class="image-container">
-                                    <img src="{{ asset('artworks/'.$artworks->image) }}" alt="" class="img-fluid">
+                                    <img src="{{ asset('storage/attachment/'.$artworks->image) }}" alt="" class="img-fluid">
                                   </div>
                                 </div>
                                 <div class="col-6">

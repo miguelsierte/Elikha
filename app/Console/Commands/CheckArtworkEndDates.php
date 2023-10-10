@@ -23,7 +23,9 @@ class CheckArtworkEndDates extends Command
     public function handle()
     {
         // Query artworks with expired end_date
-        $expiredArtworks = Artworks::where('end_date', '<=', now())->get();
+        $expiredArtworks = Artworks::where('end_date', '<=', now())
+        ->where('status', 'Approved')
+        ->get();
 
         foreach ($expiredArtworks as $artwork) {
             // Find the maximum bid amount

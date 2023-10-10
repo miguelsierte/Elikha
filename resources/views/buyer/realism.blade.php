@@ -434,10 +434,13 @@
         </div>
     </div>
     <div class="col">
-      <form method="get" action="{{ url('chatify/' . $artworks->user->id) }}">
-                                  @csrf
-                                  <button class="btn btn-dark buttonbuy" type="submit">Buy</button>
-                              </form>
+      <form method="post" action="{{ route('sendMessageToArtist', $artworks->id) }}">
+    @csrf
+    
+    <button class="btn btn-dark" type="submit">
+        Buy
+    </button>
+</form>
     </div>
 </div>
                     </div>

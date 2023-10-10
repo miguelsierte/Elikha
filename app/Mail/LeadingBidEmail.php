@@ -7,6 +7,8 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use App\Models\Artworks;
 use App\Models\Bid;
+use Illuminate\Support\Facades\Cache;
+use Carbon\Carbon;
 
 class LeadingBidEmail extends Mailable
 {
@@ -14,6 +16,8 @@ class LeadingBidEmail extends Mailable
 
     public $artwork;
     public $leadingBid;
+    public $emailId; // Unique identifier for the email
+    public $expiresAt; // Expiration date for the email
 
     /**
      * Create a new message instance.
@@ -25,7 +29,10 @@ class LeadingBidEmail extends Mailable
     {
         $this->artwork = $artwork;
         $this->leadingBid = $leadingBid;
-        
+        $this->emailId = uniqid(); // Generate a unique email ID
+        $this->expiresAt = Carbon::now()->addDays(3); // Set the expiration time
+        // Store the email content in the cache with expiration
+        Cache::put('email_' . $this->emailId, $this->render(), $this->expiresAt);
     }
 
     /**
@@ -35,26 +42,8 @@ class LeadingBidEmail extends Mailable
      */
     public function build()
     {
+        // No need to render the email here since we've already done it in the constructor
         return $this->subject('Winner')
                     ->view('emails.winner');
     }
 }
-//     public function content(): Content
-//     {
-//         return new Content(
-//             view: 'emails.winner',
-//         );
-//     }
-
-//     /**
-//      * Get the attachments for the message.
-//      *
-//      * @return array<int, \Illuminate\Mail\Mailables\Attachment>
-//      */
-//     public function attachments(): array
-//     {
-//         return [];
-//     }
-// }
-
-

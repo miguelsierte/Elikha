@@ -1,5 +1,5 @@
 @extends('buyer.master')
-
+@include('artistinc.popup')
 @section('Header')
     @include('buyer.nav')
  @endsection
@@ -86,7 +86,6 @@ z-index: 1000;
             </div>
             
         </div>
-if(artwork==auctioned){y}
         <!-- Displaying cart items (70% width) -->
         <div class="row">
             <div class="col-md-7">
@@ -100,7 +99,7 @@ if(artwork==auctioned){y}
                     <div class="card mb-3" data-artwork-type="auctioned">
                         <div class="row g-0">
                             <div class="col-md-4">
-                                <img src="{{ asset('artworks/'.$artwork->artwork->image) }}" alt="Artwork Image"
+                                <img src="{{ asset('storage/attachments/'.$artwork->artwork->image) }}" alt="Artwork Image"
                                     class="img-fluid">
                             </div>
                         <div class="col-md-8">
@@ -110,39 +109,42 @@ if(artwork==auctioned){y}
                                 <p class="card-subtitle mb-2 text-muted">{{ $artwork->artwork->user->name }}</p>
                                 <p class="card-text">{{ $artwork->artwork->description }}</p>
                                 <p class="card-text">Leading Bid: ₱{{ $leadingBid ? number_format($leadingBid, 2) : 'N/A' }}</p>
-                                    
-                                <button type="button" class="btn btn-primary bid-button" data-bs-toggle="modal" data-bs-target="#bidModal{{ $artwork->artwork->id }}">
-                                    Bid
-                                </button>
-                                
-                                <!-- Bid Modal -->
-                                <div class="modal fade" id="bidModal{{ $artwork->artwork->id }}" tabindex="-1" aria-labelledby="bidModalLabel" aria-hidden="true">
-                                
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="bidModalLabel">Enter Bid Amount</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form action="{{ route('place.bid', ['artworkId' => $artwork->artwork->id]) }}" method="POST">
-                    @csrf
-                    <label for="bidAmount">Enter Bid Amount:</label>
-                    <input type="number" id="bidAmount" name="amount" required>
+                                <div class="row">
+                                    <div class="col">
+                                            <button type="button" class="btn btn-outline-dark bid-button" data-bs-toggle="modal" data-bs-target="#bidModal{{ $artwork->artwork->id }}">
+                                                Bid
+                                            </button>
+                                    </div>
+                                            <!-- Bid Modal -->
+                                            <div class="modal fade" id="bidModal{{ $artwork->artwork->id }}" tabindex="-1" aria-labelledby="bidModalLabel" aria-hidden="true">
+                                            
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="bidModalLabel">Enter Bid Amount</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <form action="{{ route('place.bid', ['artworkId' => $artwork->artwork->id]) }}" method="POST">
+                                                                @csrf
+                                                                <label for="bidAmount">Enter Bid Amount:</label>
+                                                                <input type="number" id="bidAmount" name="amount" required>
 
-                    <button type="submit" class="btn btn-dark" onclick="placeBid({{ $artwork->artwork->id }}, $('#bidAmount').val())">Place Bid</button>
+                                                                <button type="submit" class="btn btn-dark" onclick="placeBid({{ $artwork->artwork->id }}, $('#bidAmount').val())">Place Bid</button>
 
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-<form method="post" action="{{ route('cart.remove', $artwork->artwork_id) }}">
-    @csrf
-    @method('delete')
-    <button type="submit" class="btn btn-danger mt-3">Delete</button>
-</form>                     
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                    <div class="col">
+                                        <form method="post" action="{{ route('cart.remove', $artwork->artwork_id) }}">
+                                            @csrf
+                                            @method('delete')
+                                            <button type="submit" class="btn btn-dark mt-3">Delete</button>
+                                        </form>     
+                                    </div>
+                                 </div>                
                                 </div>
                             </div>
                         </div>
@@ -156,7 +158,7 @@ if(artwork==auctioned){y}
 <div class="card mb-3" data-artwork-type="for_sale">
     <div class="row g-0">
         <div class="col-md-4">
-            <img src="{{ asset('artworks/'.$artwork->artwork->image) }}" alt="Artwork Image"
+            <img src="{{ asset('storage/attachments/'.$artwork->artwork->image) }}" alt="Artwork Image"
                 class="img-fluid">
         </div>
         <div class="col-md-8">
@@ -166,15 +168,21 @@ if(artwork==auctioned){y}
                 <p class="card-subtitle mb-2 text-muted">{{ $artwork->artwork->user->name }}</p>
                 <p class="card-text">{{ $artwork->artwork->description }}</p>
                 <p class="card-text">Price: ₱{{ number_format($artwork->artwork->price, 2) }}</p>
-               
-                    <button type="submit" class="btn btn-primary">Buy</button>
-                
+                <div class="row">
+                    <div class="col">
+                        <div class="d-inline">  
+                    <button type="submit" class="btn btn-outline-dark">Buy</button>
+                        </div>
+                 
+                    <div class="col">
                 <form method="post" action="{{ route('cart.remove', $artwork->artwork_id) }}">
                     @csrf
                     @method('delete')
-                    <button type="submit" class="btn btn-danger mt-3">Delete</button>
+                    <button type="submit" class="btn btn-dark mt-3">Delete</button>
                 </form>
-             
+            </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

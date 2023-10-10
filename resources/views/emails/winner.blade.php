@@ -16,15 +16,19 @@
     </p>
 
     <ol>
+        <li><strong>Log in to your account.</strong></li>
         <li>Follow the instructions to make the payment and arrange for the artwork's delivery or pickup.</li>
-        <div style="text-align: center;">
-            <form method="get" action="{{ url('chatify/' . $artwork->user->id) }}">
-                @csrf
-                <form method="post" action="{{ route('api.sendMessageToArtist', ['artistId' => $artwork->user->id]) }}">
-                    Buy
-                </button>
-            </form>
-        </div>
+        <li>
+            <strong>Click the button below to start a conversation with the artist:</strong>
+            <div style="text-align: center; margin-top: 10px;">
+                <form method="get" action="{{ url('chatify/' . $artwork->user->id) }}">
+                    @csrf
+                    <button style="background-color: #007bff; color: #fff; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">
+                        Talk with the Artist
+                    </button>
+                </form>
+            </div>
+        </li>
     </ol>
 
     <p>

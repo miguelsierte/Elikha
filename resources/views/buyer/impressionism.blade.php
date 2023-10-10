@@ -433,8 +433,13 @@
         </div>
     </div>
     <div class="col">
-      <button class="btn btn-dark buttonbuy" type="submit">Buy</button>
-    </div>
+      <form method="post" action="{{ route('sendMessageToArtist', $artworks->id) }}">
+    @csrf
+    
+    <button class="btn btn-dark" type="submit">
+        Buy
+    </button>
+</form>    </div>
 </div>
                     </div>
                 </div>
