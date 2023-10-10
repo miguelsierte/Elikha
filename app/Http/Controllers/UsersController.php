@@ -148,8 +148,10 @@ class UsersController extends Controller
     return back()->with("success", "Artwork marked as sold!");
 }
     public function artistSettings()
-    {
-        return view('artist.settings');
+    {$userVerification = Verify::where('users_id', Auth::id())
+        ->where('status', 'Approved')
+        ->exists();
+        return view('artist.settings', compact('userVerification'));
     }
     public function updateartistSetting(Request $request)
 {
