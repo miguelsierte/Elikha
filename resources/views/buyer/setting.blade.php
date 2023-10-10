@@ -56,9 +56,32 @@
 
                     @csrf
 
-                    <div class="mb-3">
-                        <input class="form-control" type="file" name="image" id="image">
-                    </div>
+                    <div class="col" style="text-align: center ">
+                          <div class="profile-image">
+                              <img id="profile-image" src="{{ asset('images/'.$user->image) }}" alt="{{ $user->name[0] }}" class="default-profile-image">
+                          </div>
+                          
+                          <h6>Edit Profile Picture</h6>
+                          <input class="form-control" type="file" name="image" id="image">
+                          
+                          <script>
+                            function displayImage() {
+                              const fileInput = document.getElementById('image');
+                              const profileImage = document.getElementById('profile-image');
+                              const file = fileInput.files[0];
+                              const reader = new FileReader();
+                          
+                              reader.onload = function (e) {
+                                profileImage.src = e.target.result;
+                              };
+                          
+                              reader.readAsDataURL(file);
+                            }
+                          
+                            document.getElementById('image').addEventListener('change', displayImage);
+                          </script>
+                          
+                       </div>
 
                     <button type="submit" class="btn btn-outline-primary">Save</button>
                 </form>

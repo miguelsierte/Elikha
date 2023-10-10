@@ -76,7 +76,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
-                <button type="submit" class="btn btn-outline-primary">Submit</button>
+                <button type="submit" class="btn btn-dark">Submit</button>
             </form>
             </div>
         </div>

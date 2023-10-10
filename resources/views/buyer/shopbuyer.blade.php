@@ -2,17 +2,7 @@
 
 @section('Body')
 @include('buyer.Nav')
-@if(session('error'))
-    <div class="alert alert-danger">
-        {{ session('error') }}
-    </div>
-@endif
 
-@if(session('success'))
-    <div class="alert alert-success">
-        {{ session('success') }}
-    </div>
-@endif
 
 <div class="container shop-container ">
   <div class="row row0 d-flex justify-content-center align-items-center">
@@ -239,7 +229,7 @@
         <div class="col-md-4">
             <div class="card clickable-card" style="width: 16rem; margin-block: 10px; margin-right: 50px;"
                  data-toggle="modal" data-target="#Modal{{ $artworks->start_price ? 'Auction' : 'Sale' }}_{{ $artworks->id }}">
-                <img src="{{ asset('artworks/'.$artworks->image) }}" class="card-img-top art-image" alt="Artwork Image">
+                <img src="{{ asset('storage/attachments/'.$artworks->image) }}" class="card-img-top art-image" alt="Artwork Image">
                 <div class="card-body">
                     <h5 class="card-title">{{ $artworks->title }}</h5>
                     <h6>{{ $artworks->user->name }}</h6>
@@ -256,7 +246,7 @@
         <div class="col-md-4">
             <div class="card clickable-card" style="width: 16rem; margin-block: 10px; margin-right: 50px;"
                  data-toggle="modal" data-target="#ModalSale_{{ $artworks->id }}">
-                <img src="{{ asset('artworks/'.$artworks->image) }}" class="card-img-top art-image" alt="Artwork Image">
+                <img src="{{ asset('storage/attachments/'.$artworks->image) }}" class="card-img-top art-image" alt="Artwork Image">
                 <div class="card-body">
                     <h5 class="card-title">{{ $artworks->title }}</h5>
                     <h6>{{ $artworks->user->name }}</h6>
@@ -281,60 +271,83 @@
               <div class="row">
                   <div class="col-6">
                       <div class="row image-container">
-                          <img src="{{ asset('artworks/'.$artworks->image) }}" alt="" class="img-fluid">
+                          <img src="{{ asset('storage/attachments/'.$artworks->image) }}" alt="" class="img-fluid">
                       </div>
                   </div>
                   <div class="col-6">
                       <h1>Title: {{ $artworks->title }}</h1>
-                      <h5>{{ $artworks->user->name}}</h5>
+                      <h5><a href="{{ route('portfolio', ['id' => $artworks->user->id]) }}">{{ $artworks->user->name }}</a></h5>
                       <h6 class="price">₱{{ $artworks->price }}{{ $artworks->start_price }}</h6>
                       <br>
-                      @php
-                    
-                    $leadBidAmount = $artworks->bids->max('amount');
+<p class="list-group-item"><strong>Duration: </strong>
+  <span id="countdown_{{ $artworks->id }}">
+        <span id="days_{{ $artworks->id }}">0</span> days
+        <span id="hours_{{ $artworks->id }}">0</span> hours
+        <span id="minutes_{{ $artworks->id }}">0</span> minutes
+        <span id="seconds_{{ $artworks->id }}">0</span> seconds
+</span></p>
+<script>
+  function startCountdown_{{ $artworks->id }}(endDate) {
+      const targetDate_{{ $artworks->id }} = new Date(endDate).getTime();
+      const countdownInterval_{{ $artworks->id }} = setInterval(function () {
+          const now_{{ $artworks->id }} = new Date().getTime();
+          const timeRemaining_{{ $artworks->id }} = targetDate_{{ $artworks->id }} - now_{{ $artworks->id }};
+          
+          const days_{{ $artworks->id }} = Math.floor(timeRemaining_{{ $artworks->id }} / (1000 * 60 * 60 * 24));
+          const hours_{{ $artworks->id }} = Math.floor((timeRemaining_{{ $artworks->id }} % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          const minutes_{{ $artworks->id }} = Math.floor((timeRemaining_{{ $artworks->id }} % (1000 * 60 * 60)) / (1000 * 60));
+          const seconds_{{ $artworks->id }} = Math.floor((timeRemaining_{{ $artworks->id }} % (1000 * 60)) / 1000);
+          
+          document.getElementById('days_{{ $artworks->id }}').textContent = days_{{ $artworks->id }};
+          document.getElementById('hours_{{ $artworks->id }}').textContent = hours_{{ $artworks->id }};
+          document.getElementById('minutes_{{ $artworks->id }}').textContent = minutes_{{ $artworks->id }};
+          document.getElementById('seconds_{{ $artworks->id }}').textContent = seconds_{{ $artworks->id }};
+          
+          if (timeRemaining_{{ $artworks->id }} < 0) {
+              clearInterval(countdownInterval_{{ $artworks->id }});
+              document.getElementById('countdown_{{ $artworks->id }}').innerHTML = "Expired";
+              setTimeout(function () {
+                  document.getElementById('countdown_{{ $artworks->id }}').innerHTML = "<b><span id='days_{{ $artworks->id }}'>0</span> days <span id='hours_{{ $artworks->id }}'>0</span> hours <span id='minutes_{{ $artworks->id }}'>0</span> minutes <span id='seconds_{{ $artworks->id }}'>0</span> seconds</b>";
+                  startCountdown_{{ $artworks->id }}(endDate); // Restart the countdown
+              }, 5000);
+          }
+      }, 1000);
+  }
 
-                    $endDate = \Carbon\Carbon::parse($artworks->end_date);
-                    $currentDate = \Carbon\Carbon::now();
-                    $daysLeft = $currentDate->diffInDays($endDate);
-                @endphp
-                <p class="list-group-item"><strong>Duration: </strong>{{ $daysLeft }} days left</p>
+  const initialEndDate_{{ $artworks->id }} = '{{$artworks->end_date}}';
+  startCountdown_{{ $artworks->id }}(initialEndDate_{{ $artworks->id }});
+</script>  
                 <p><strong>Lead Bid: </strong> ₱{{ $artworks->bids->max('amount') }}</p>
                       <p><strong>Description:</strong></p>
                       <p>{{ $artworks->description }}</p>
                       <div class="row">
-                          <div class="d-inline">
-                              <form id="bidForm_{{ $artworks->id }}" action="{{ route('place.bid', ['artworkId' => $artworks->id]) }}" method="POST">
-                                @csrf 
-                                <!-- Display the error message here -->
-                                @if(session('error'))
-                                    <div class="alert alert-danger">
-                                        {{ session('error') }}
-                                    </div>
-                                @endif
-                                      
-                                <div class="form-group">
-                                  <label for="bidAmount_{{ $artworks->id }}">Enter the Amount:</label>
-
-                                  <input type="number" class="form-control" id="bidAmount_{{ $artworks->id }}" name="amount" required>
-                              </div><br>
-                              <button type="submit" class="btn btn-dark">Place Bid</button>
-                          </form>
-                          <form action="{{ route('cart.add') }}" method="POST">
+                        <div class="col">
+        <div class="d-inline">
+          <form action="{{ route('cart.add') }}" method="POST">
                             @csrf
                             <input type="hidden" name="artwork_id" value="{{ $artworks->id }}">
                             <button type="submit" class="btn btn-outline-dark buttonaddtocart">Add to Cart</button>
-                            @if(session('success'))
-                          <div class="alert alert-success">
-                              {{ session('success') }}
-                          </div>
-                      @endif
-                      
-                      @if(session('error'))
-                          <div class="alert alert-danger">
-                              {{ session('error') }}
-                          </div>
-                      @endif
                         </form>
+            
+        </div>
+    </div>
+    <div class="col">
+                              <form id="bidForm_{{ $artworks->id }}" action="{{ route('place.bid', ['artworkId' => $artworks->id]) }}" method="POST">
+                                @csrf 
+                                <button type="submit" class="btn btn-dark">Place Bid</button>
+                                <div class="form-group">
+                                  <label for="bidAmount_{{ $artworks->id }}">Enter the Amount:</label>
+                                  <input type="number" class="form-control" id="bidAmount_{{ $artworks->id }}" name="amount" required>
+                              </div>
+                              
+                                <div class="text-end">
+                                  <br>
+                              
+                          </form>
+                          
+
+                      </div>
+                        
                               
                             
                           <!-- Modal for Bidding -->
@@ -373,40 +386,37 @@
                 <div class="row">
                     <div class="col-6">
                         <div class="row image-container">
-                            <img src="{{ asset('artworks/'.$artworks->image) }}" alt="" class="img-fluid">
+                            <img src="{{ asset('storage/attachments/'.$artworks->image) }}" alt="" class="img-fluid">
                         </div>
                     </div>
                     <div class="col-6">
                         <h1>Title: {{ $artworks->title }}</h1>
-                        <p>{{ $artworks->user->name}}</p>
+                        <h5><a href="{{ route('portfolio', ['id' => $artworks->user->id]) }}">{{ $artworks->user->name }}</a></h5>
                         <h6 class="price">₱{{ $artworks->price }}{{ $artworks->start_price }}</h6>
                         <br>
                         <p>Description:</p>
                         <p>{{ $artworks->description }}</p>
                         <div class="row">
-                            <div class="d-inline">
-                              <button class="btn btn-dark buttonbuy" type="submit">Buy</button>
-                            </div>
-                            <form action="{{ route('cart.add') }}" method="POST">
-                              @csrf
-                              <input type="hidden" name="artwork_id" value="{{ $artworks->id }}">
-                              <button type="submit" class="btn btn-outline-dark buttonaddtocart">Add to Cart</button>
-                              @if(session('success'))
-                          <div class="alert alert-success">
-                              {{ session('success') }}
-                          </div>
-                      @endif
-                      
-                      @if(session('error'))
-                          <div class="alert alert-danger">
-                              {{ session('error') }}
-                          </div>
-                      @endif
-                          </form>
-                            
-                          
-                      
-                        </div>
+    <div class="col">
+        <div class="d-inline">
+          <form action="{{ route('cart.add') }}" method="POST">
+            @csrf
+            <input type="hidden" name="artwork_id" value="{{ $artworks->id }}">
+            <button type="submit" class="btn btn-outline-dark buttonaddtocart">Add to Cart</button>
+        </form>
+            
+        </div>
+    </div>
+    <div class="col">
+                <form method="post" action="{{ route('sendMessageToArtist', $artworks->id) }}">
+    @csrf
+    
+    <button class="btn btn-dark" type="submit">
+        Buy
+    </button>
+</form>
+    </div>
+</div>
                     </div>
                 </div>
                 <p style="color: rgba(142, 146, 149, 0.491)">{{ $artworks->dimension }}cm</p>

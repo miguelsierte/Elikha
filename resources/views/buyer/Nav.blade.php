@@ -30,7 +30,7 @@
             
             <div class="profile-image-button">
               @if($user->image)
-                  <img src="{{ asset('images/'.$user->image) }}" class="profile-image-buyer rounded-circle">
+                  <img src="{{ asset('images/'.$user->image) }}" class="profile-image-buyers">
               @else
                   <div class="text-center">{{ $user->name[0] }}</div>
               @endif
@@ -41,6 +41,26 @@
     </div>
 </nav>
 <style>
+  .profile-image img {
+    border-radius: 50%;
+    max-width: 200px;
+    max-height: 200px;
+    margin: 50px;
+    
+  }
+  .default-profile-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #3a3a3a;
+  color: #ffffff;
+  font-size: 100px;
+  font-weight: bold;
+  border-radius: 50%;
+  width: 152px;
+  height: 152px;
+  border-radius: 50%;
+  }
   .profile-image-button {
       width: 40px;
       height: 40px;
@@ -56,9 +76,9 @@
 
   }
 
-  .profile-image-buyer {
-      max-width: 100%;
-      max-height: 100%;
+  .profile-image-buyers {
+      max-width: 400%;
+      max-height: 400%;
       object-fit: cover;
       border-radius: 50%;
   }
@@ -81,7 +101,7 @@ li::marker {
     <div class="row justify-content-center">
       <div class="profile-image">
         @if($user->image)
-            <img src="{{ asset('storage/images/'.$user->image) }}" class="profile-image-buyer rounded-circle">
+            <img src="{{ asset('images/'.$user->image) }}" class="profile-image-buyer">
         @else
             <div class="profile-image-buyer rounded-circle">
                 <div class="text-center">{{ $user->name[0] }}</div>
@@ -92,8 +112,8 @@ li::marker {
   </div>
   <style>
       .profile-image {
-          width: 100px;
-          height: 100px;
+          width: 80px;
+          height: 80px;
           border-radius: 50%;
           background-color: #3a3a3a;
           display: flex;

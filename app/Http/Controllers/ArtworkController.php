@@ -30,7 +30,7 @@ class ArtworkController extends Controller
     ]);
 
     if ($image = $request->file('image')) {
-        $destinationPath = 'artworks/';
+        $destinationPath = 'storage/attachments';
         $artworkImage = date('YmdHis') . "." . $image->getClientOriginalExtension();
         $image->move($destinationPath, $artworkImage);
         $input['image'] = "$artworkImage";
@@ -72,7 +72,7 @@ class ArtworkController extends Controller
     ]);
 
     if ($image = $request->file('image')) {
-        $destinationPath = 'artworks/';
+        $destinationPath = 'storage/attachments';
         $artworkImage = date('YmdHis') . "." . $image->getClientOriginalExtension();
         $image->move($destinationPath, $artworkImage);
         $input['image'] = "$artworkImage";

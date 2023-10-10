@@ -15,7 +15,7 @@ class CreateCartsTable extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained();
             $table->foreignId('artwork_id')->constrained();
-            $table->decimal('price', 10, 2); // Add the price column
+            $table->decimal('price', 10, 2)->nullable(); // Add the price column
             $table->enum('type', ['auction', 'sale']); // Add the type column for auction or sale items
             $table->foreignId('bid_id')->nullable()->constrained(); // Add bid relationship
             $table->timestamps();

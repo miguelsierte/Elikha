@@ -33,7 +33,7 @@
                 <div class="collapse show" id="posts-collapse">
                   <ul class="btn-toggle-nav list-unstyled fw-normal pb-2 small">
                     <li><a href="{{url('/profile')}}" class="link-dark d-inline-flex text-decoration-none rounded">My Posts</a></li>
-                <li><a href="{{route('artistAuction')}}" class="link-dark d-inline-flex text-decoration-none rounded">My Auctions</a></li>
+                <li><a href="{{route('artistAuction')}}" class="link-dark d-inline-flex text-decoration-none rounded">Enlistments</a></li>
                 {{-- <li><a href="" class="link-dark d-inline-flex text-decoration-none rounded">Add New Posts</a></li> --}}
                   </ul>
                 </div>

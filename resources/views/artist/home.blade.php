@@ -24,17 +24,17 @@
                     
                     <div class="row grid text-center">
                         <div class="col-sm-4 p-2 text-align: center">
-                            <h2>---</h2>
-                            <p>Active Auctions</p>
+                            <h2>{{$activeArtworksCount}}</h2>
+                            <p>Active Artworks</p>
                             
                         </div>
                         <div class="col-sm-4 p-2 text-align: center">
-                            <h2>---</h2>
-                            <p>Pending Payments</p>
+                            <h2>{{$pendingArtworksCount}}</h2>
+                            <p>Pending Artworks</p>
                         </div>
                         <div class="col-sm-4 p-2 text-align: center">
                             <h2>---</h2>
-                            <p>Important Messages</p>
+                            <p>Unread Messages</p>
                         </div>
                         
                       </div>
@@ -47,14 +47,14 @@
                         <div class="col-sm-4 p-2"><h4>Engagements</h4>  
                         <img class="engage" src="artistimg/icon metro-chart-line.png" alt="..." height="105" width="105">
                         <div class="m-1">
-                        <h3>---</h3>
+                        <h3></h3>
                         <p>have seen your posts</p>
                         </div>
                     </div>
                         <div class="col-sm-4 p-2"><h4>Profile Views</h4> <br>
                             <img class="view" src="artistimg/icon metro-eye.png" alt="..." height="80" width="120">
                             <div class="m-1">
-                            <h3>---</h3>
+                            <h3>---</h3>engagements
                             <p>have viewed your profile</p>
                         </div>
                         </div>
@@ -62,7 +62,7 @@
                         <div class="col-sm-4 p-2"><h4>Sold</h4>
                             <img class="sold" src="artistimg/icon metro-money.png" alt="..." height="100" width="70">
                             <div class="m-1">
-                            <h3>---</h3>
+                            <h3>{{$soldArtworksCount}}</h3>
                             <p>sold artworks</p>
                         </div>
                         </div>

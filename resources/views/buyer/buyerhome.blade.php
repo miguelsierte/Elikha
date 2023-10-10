@@ -158,7 +158,7 @@
             <p style="font-size: 12px">{{ \Illuminate\Support\Str::limit($artwork[0]->description, 200) }}</p>
         </div>
         <img
-            src="{{ asset('artworks/'.$artwork[0]->image) }}"
+            src="{{ asset('storage/attachments/'.$artwork[0]->image) }}"
             class="mb-4 upcomingauction1"
             alt=""
         />
@@ -175,7 +175,7 @@
           <p style="font-size: 12px">{{ \Illuminate\Support\Str::limit($artwork[1]->description, 200) }}</p>
       </div>
           <img
-          src="{{ asset('artworks/'.$artwork[1]->image) }}"
+          src="{{ asset('storage/attachments/'.$artwork[1]->image) }}"
             class="mb-4 upcomingauction2"
             alt=""
           />
@@ -196,7 +196,7 @@
           <p style="font-size: 12px">{{ \Illuminate\Support\Str::limit($artwork[2]->description, 200) }}</p>
       </div>
           <img
-          src="{{ asset('artworks/'.$artwork[2]->image) }}"
+          src="{{ asset('storage/attachments/'.$artwork[2]->image) }}"
             class="mb-4 upcomingauction2"
             alt=""
           />
@@ -213,7 +213,7 @@
           <p style="font-size: 12px">{{ \Illuminate\Support\Str::limit($artwork[3]->description, 200) }}</p>
       </div>
           <img
-          src="{{ asset('artworks/'.$artwork[3]->image) }}"
+          src="{{ asset('storage/attachments/'.$artwork[3]->image) }}"
             class="mb-4 upcomingauction1"
             alt=""
           />
@@ -232,7 +232,7 @@
           <p style="font-size: 12px">{{ \Illuminate\Support\Str::limit($artwork[4]->description, 200) }}</p>
       </div>
           <img
-          src="{{ asset('artworks/'.$artwork[4]->image) }}"
+          src="{{ asset('storage/attachments/'.$artwork[4]->image) }}"
             class="shadow-1-strong rounded mb-4 upcomingauction1"
             alt=""
           />
@@ -249,7 +249,7 @@
           <p style="font-size: 12px">{{ \Illuminate\Support\Str::limit($artwork[5]->description, 200) }}</p>
       </div>
           <img
-          src="{{ asset('artworks/'.$artwork[5]->image) }}"
+          src="{{ asset('storage/attachments/'.$artwork[5]->image) }}"
             class="shadow-1-strong rounded mb-4 upcomingauction2"
             alt=""
           />

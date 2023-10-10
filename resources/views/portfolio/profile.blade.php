@@ -173,7 +173,7 @@
 			@foreach ($artwork as $artworks)
 			<div class="col-lg-4 col-sm-6">
 				<div class="art-wrapper">
-					<img src="{{ asset('artworks/'.$artworks->image) }}" alt="" class="art">
+					<img src="{{ asset('storage/attachments/'.$artworks->image) }}" alt="" class="art">
 					<div class="overlay">
 						<button type="button" class="btn btn-hover" data-toggle="modal" data-target="#ARTMODAL_{{ $artworks->id }}">
 							View Art
@@ -196,7 +196,7 @@
 					  <div class="row">
 						<div class="col-6">
 						  <div class="image-container">
-							<img src="{{ asset('artworks/'.$artworks->image) }}" alt="" class="img-fluid">
+							<img src="{{ asset('storage/attachments/'.$artworks->image) }}" alt="" class="img-fluid">
 						  </div>
 						</div>
 						<div class="col-6">

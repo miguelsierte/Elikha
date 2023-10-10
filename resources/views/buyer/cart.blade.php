@@ -150,6 +150,7 @@ z-index: 1000;
                 @endforeach
 
                 <!-- Display For Sale Artworks in Cart -->
+            
 <h2>For Sale Items</h2>
 @foreach($saleItems as $artwork)
 <div class="card mb-3" data-artwork-type="for_sale">

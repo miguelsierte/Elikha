@@ -35,5 +35,15 @@ $timeAndSeen = "<span data-time='$created_at' class='message-time'>
             </div>
         </div>
         @endif
+        @if(@$artworks->type == 'image')
+        <div class="image-wrapper" style="text-align: {{$isSender ? 'end' : 'start'}}">
+            <div class="image-file chat-image" style="background-image: url('{{ Chatify::getAttachmentUrl($artworks->image) }}')">
+                <div>{{ $artworks->title }}</div>
+            </div>
+            <div style="margin-bottom:5px">
+                {!! $timeAndSeen !!}
+            </div>
+        </div>
+        @endif
     </div>
 </div>

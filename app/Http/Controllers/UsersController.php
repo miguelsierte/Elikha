@@ -15,6 +15,10 @@ use App\Models\Ticket;
 use Carbon\Carbon; 
 use App\Models\Verify;
 use Illuminate\Support\Facades\DB;
+use App\Models\Bid;
+use Chatify\Facades\ChatifyMessenger as Chatify;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Response;
 
 
 class UsersController extends Controller
@@ -104,17 +108,42 @@ class UsersController extends Controller
 
     public function artistHome()
     {
-            return view('artist.home');
+        $activeArtworksCount = Artworks::where('users_id', Auth::id())
+        ->where('status', 'Approved')
+        ->count();
+        $pendingArtworksCount = Artworks::where('users_id', Auth::id())
+        ->where('status', 'Pending')
+        ->count();
+        $soldArtworksCount = Artworks::where('users_id', Auth::id())
+        ->where('status', 'Sold')
+        ->count();
+            return view('artist.home', compact('activeArtworksCount', 'pendingArtworksCount', 'soldArtworksCount'));
     }
-    public function artistAuction()
+    public function artistAuction(Request $request)
     {
         $artwork = Artworks::where('users_id', Auth::id())
-                       ->where('status', 'Approved')
-                        ->whereNotNull('start_price') 
-                        ->orderBy('created_at', 'DESC')
-                        ->get();
-        return view('artist.myauctions', compact('artwork'));
+        ->where('status', 'Approved')
+        ->orderBy('created_at', 'DESC')
+        ->get();
+
+    // Fetch bidders for each artwork
+    foreach ($artwork as $artworks) {
+        $artworks->bidders = DB::table('bids')
+            ->where('artwork_id', $artworks->id)
+            ->join('users', 'bids.user_id', '=', 'users.id')
+            ->select('users.name as bidder_name', 'bids.amount', 'bids.created_at')
+            ->get();
     }
+
+    return view('artist.myauctions', compact('artwork'));
+    }
+    public function sold(Request $request, $id)
+{
+    $artwork = Artworks::findOrFail($id);
+    $artwork->status = 'Sold';
+    $artwork->save();
+    return back()->with("success", "Artwork marked as sold!");
+}
     public function artistSettings()
     {
         return view('artist.settings');
@@ -687,8 +716,93 @@ return redirect()->back()->with('error', 'Failed to place bid. Please try again.
     
         return redirect()->back()->withErrors(['image' => 'Failed to update profile picture. Please try again.']);
     }
-    
+    public function sendMessageToArtist(Request $request, $id)
+{
+    $artwork = Artworks::findOrFail($id);
 
+    if (!$artwork) {
+        return redirect()->back()->with('error', 'Artwork not found.');
     }
 
+    $attachment = $artwork->image;
+    $artworkTitle = $artwork->title;
 
+    $sender = auth()->user(); 
+
+    $artistId = $artwork->user->id;
+    
+        $message = Chatify::newMessage([
+            'from_id' => $sender->id,
+            'to_id' => $artistId, // Use the artist's ID as the recipient
+            'body' => "Hello! I'm interested in buying your artwork,'$artworkTitle' Is it still available?",
+            'attachment' => ($attachment) ? json_encode((object)[
+                'new_name' => $attachment,
+                'old_name' => htmlentities(trim($attachment), ENT_QUOTES, 'UTF-8'),
+            ]) : null,
+        ]);
+    $messageData = Chatify::parseMessage($message);
+    if (Auth::user()->id != $request['id']) {
+        Chatify::push("private-chatify.".$request['id'], 'messaging', [
+            'from_id' => Auth::user()->id,
+            'to_id' => $request['id'],
+            'message' => Chatify::messageCard($messageData, true)
+        ]);
+    }
+    // Construct the URL
+    $chatifyUrl = url('chatify/' . $artwork->user->id);
+
+    // Redirect the user to the URL immediately
+    return redirect()->to($chatifyUrl);
+}
+public function sendGCashImage(Request $request, $id)
+{
+    $verificationRequest = VerificationRequest::findOrFail($id);
+
+    if (!$verificationRequest) {
+        return redirect()->back()->with('error', 'Verification request not found.');
+    }
+
+    $gcashImage = $verificationRequest->gcash_image;
+    $gcashTitle = $verificationRequest->title;
+
+    $sender = auth()->user();
+
+    $artistId = $verificationRequest->user->id;
+
+    $message = Chatify::newMessage([
+        'from_id' => $sender->id,
+        'to_id' => $artistId,
+        'body' => "Hello! I've uploaded my GCash image for verification. Please review it.",
+        'attachment' => ($gcashImage) ? json_encode((object)[
+            'new_name' => $gcashImage,
+            'old_name' => htmlentities(trim($gcashImage), ENT_QUOTES, 'UTF-8'),
+        ]) : null,
+    ]);
+
+    $messageData = Chatify::parseMessage($message);
+
+    if (Auth::user()->id != $request['id']) {
+        Chatify::push("private-chatify." . $request['id'], 'messaging', [
+            'from_id' => Auth::user()->id,
+            'to_id' => $request['id'],
+            'message' => Chatify::messageCard($messageData, true),
+        ]);
+    }
+}
+
+}
+
+
+
+    
+    // $message = Chatify::newMessage([
+    //     'from_id' => Auth::user()->id,
+    //     'to_id' => $request['id'],
+    //     'body' => htmlentities(trim($request['message']), ENT_QUOTES, 'UTF-8'),
+    //     'attachment' => ($attachment) ? json_encode((object)[
+    //         'new_name' => $attachment,
+    //         'old_name' => htmlentities(trim($attachment_title), ENT_QUOTES, 'UTF-8'),
+    //     ]) : null,
+    // ]);
+    
+    

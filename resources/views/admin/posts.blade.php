@@ -216,7 +216,8 @@
                                         <button type="button" class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#rejectModal{{ $artwork->id }}" data-artwork-id="{{ $artwork->id }}">
                                             <i class="fa fa-trash-o" aria-hidden="true"></i> Reject
                                         </button>
-                                        <div class="modal fade" id="ARTMODAL_{{ $artwork->id }}" tabindex="-1" role="dialog" aria-labelledby="artmodal" aria-hidden="true">                                            <div class="modal-dialog fixed-modal-dialog" role="document">
+                                        <div class="modal fade" id="ARTMODAL_{{ $artwork->id }}" tabindex="-1" role="dialog" aria-labelledby="artmodal" aria-hidden="true">                                            
+                                            <div class="modal-dialog fixed-modal-dialog" role="document">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
                                                         <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
@@ -227,7 +228,7 @@
                                                         <div class="row">
                                                             <div class="col-6">
                                                                 <div class="image-container">
-                                                                    <img src="{{ asset('artworks/'.$artwork->image) }}" alt="" class="img-fluid">
+                                                                    <img src="{{ asset('storage/attachments/'.$artwork->image) }}" alt="" class="img-fluid">
                                                                     <p>Dimension: {{ $artwork->dimension }}</p>
                                                                 </div>
                                                             </div>
