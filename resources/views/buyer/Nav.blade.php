@@ -9,7 +9,7 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link {{ Request::is('/') ? 'active' : '' }}" href="/buyerhome">Home</a>
+            <a class="nav-link {{ Request::is('buyerhome') ? 'active' : '' }}" href="/buyerhome">Home</a>
           </li>
           <li class="nav-item">
             <a class="nav-link {{ Request::is('about') ? 'active' : '' }}" href="#about-section">About</a>
@@ -18,7 +18,7 @@
             <a class="nav-link {{ Request::routeIs('chatify') ? 'active' : '' }}" href="{{ route('chatify') }}">Messages</a>
         </li>  
           <li class="nav-item">
-            <a class="nav-link {{ Request::is('shop') ? 'active' : '' }}" href="/shopbuyer">Shop</a>
+            <a class="nav-link {{ Request::is('shopbuyer', 'popart', 'realism', 'abstract', 'expressionism', 'impressionism', 'photorealism', 'portrait') ? 'active' : '' }}" href="/shopbuyer">Shop</a>
           </li>
           <li class="nav-item">
             <a class="nav-link {{ Request::is('cart') ? 'active' : '' }}" href="/cart">Cart</a>
@@ -27,6 +27,7 @@
         
         <li class="nav-item">
           <button class="btn profile-image-button" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+            <br>
               <div class="profile-image-button">
                   @if($user->image)
                       <img src="{{ asset('images/'.$user->image) }}" class="profile-image-buyers">

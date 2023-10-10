@@ -58,14 +58,15 @@ class CartController extends Controller
         $user = Auth::user();
         $cartItems = Cart::with('artwork.bids')->where('user_id', $user->id)->get();
 
-        // Filter auctioned and for_sale items
-        $auctionItems = $cartItems->filter(function ($cartItem) {
-            return $cartItem->artwork->start_price !== null;
-        });
+        // Filter auctioned and for_sale items with approved artwork status
+$auctionItems = $cartItems->filter(function ($cartItem) {
+    return $cartItem->artwork->start_price !== null && $cartItem->artwork->status === 'Approved';
+});
 
-        $saleItems = $cartItems->filter(function ($cartItem) {
-            return $cartItem->artwork->start_price === null;
-        });
+$saleItems = $cartItems->filter(function ($cartItem) {
+    return $cartItem->artwork->start_price === null && $cartItem->artwork->status === 'Approved';
+});
+
 
         // Calculate total prices based on sort type
         $sortType = $request->input('sortType', 'all');

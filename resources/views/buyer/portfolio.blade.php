@@ -14,6 +14,8 @@
     </button>
 </div>
 @endif
+<body style="font-family:Helvetica Neue">
+
 <div class="container mt-4">
     <!--pr0file-->
     <br>
@@ -24,7 +26,7 @@
                     @if($artist->image)
                         <img src="{{ asset('images/'.$artist->image) }}" alt="" class="default-profile-images" style="width: 200px; height: 200px;border-radius: 50%; object-fit: cover;">
                     @else
-                        <div class="default-profile-images">{{ $artist->name[0] }}</div>
+                        <div class="default-profile-image">{{ $artist->name[0] }}</div>
                     @endif
                 </div>
                 <h1 class="profile-user-name mt-4">{{ $artist->name }}</h1>
@@ -48,10 +50,10 @@
                     <div class="col-lg-4 col-sm-6" style="margin-bottom: 20px">
                         <div class="container artwork-container">
                             <div class="image-container">
-                                <img src="{{ asset('storage/attachment/'.$artworks->image) }}" alt="" class="artwork-buyerview" style="object-fit: cover; border-radius: 10%;">
+                                <img src="{{ asset('storage/attachments/'.$artworks->image) }}" alt="" class="artwork-buyerview" style="object-fit: cover; border-radius: 10%;">
                                 <div class="overlay">
-                                    <p class="overlay-text">{{ $artworks->title }}</p><br>
-                                    <button type="button" class="btn btn-hover text-white" data-toggle="modal" data-target="#ARTMODAL_{{ $artworks->id }}">
+                                    <p class="overlay-text" style="font-family:Helvetica Neue">{{ $artworks->title }}</p><br>
+                                    <button style="font-family:Helvetica Neue" type="button" class="btn btn-hover text-white" data-toggle="modal" data-target="#ARTMODAL_{{ $artworks->id }}">
 										View Art
 									</button>
                                 </div>
@@ -71,14 +73,14 @@
                               <div class="row">
                                 <div class="col-6">
                                   <div class="image-container">
-                                    <img src="{{ asset('storage/attachment/'.$artworks->image) }}" alt="" class="img-fluid">
+                                    <img src="{{ asset('storage/attachments/'.$artworks->image) }}" alt="" class="img-fluid">
                                   </div>
                                 </div>
                                 <div class="col-6">
                                   <H1>{{ $artworks->title }}</H1>
                                   <h5>{{ $artworks->user->name }}</h5>
                                   <br>
-                                  <p>Description:</p>
+                                  <p><strong>Description:</strong></p>
                                   <p>{{ $artworks->description }}</p>
                                 </div>
                               </div>
@@ -146,6 +148,24 @@
         font-size: 16px;
         margin-bottom: 10px;
     }
+
+					.default-profile-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #3a3a3a;
+    color: #ffffff;
+    font-size: 100px;
+    font-weight: bold;
+    border-radius: 50%;
+    width: 152px;
+    height: 152px;
+	
+}
+.profile-image {
+  max-width: 500px;
+  max-height: 500px;
+}
    </style>
    
 </div>

@@ -1,7 +1,8 @@
 @extends('buyer.master')
 
-@include('buyer.Nav') 
 @section('Header')
+@include('buyer.Nav') 
+
 <style>
     
   .default-imagesetting {

@@ -1,6 +1,5 @@
 @extends('layout/master')
 @section ('Body')
-<div class="body">
 @section('Head')
 
 @endsection

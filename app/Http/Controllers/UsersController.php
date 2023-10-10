@@ -117,7 +117,10 @@ class UsersController extends Controller
         $soldArtworksCount = Artworks::where('users_id', Auth::id())
         ->where('status', 'Sold')
         ->count();
-            return view('artist.home', compact('activeArtworksCount', 'pendingArtworksCount', 'soldArtworksCount'));
+        $userVerification = Verify::where('users_id', Auth::id())
+        ->where('status', 'Approved')
+        ->exists();
+            return view('artist.home', compact('activeArtworksCount', 'pendingArtworksCount', 'soldArtworksCount', 'userVerification'));
     }
     public function artistAuction(Request $request)
     {
@@ -726,6 +729,7 @@ return redirect()->back()->with('error', 'Failed to place bid. Please try again.
 
     $attachment = $artwork->image;
     $artworkTitle = $artwork->title;
+    $artworkPrice = $artwork->price;
 
     $sender = auth()->user(); 
 
@@ -734,7 +738,7 @@ return redirect()->back()->with('error', 'Failed to place bid. Please try again.
         $message = Chatify::newMessage([
             'from_id' => $sender->id,
             'to_id' => $artistId, // Use the artist's ID as the recipient
-            'body' => "Hello! I'm interested in buying your artwork,'$artworkTitle' Is it still available?",
+            'body' => "Hello! I'm interested in buying your artwork,'$artworkTitle' with a price of ₱$artworkPrice. Is it still available?",
             'attachment' => ($attachment) ? json_encode((object)[
                 'new_name' => $attachment,
                 'old_name' => htmlentities(trim($attachment), ENT_QUOTES, 'UTF-8'),
@@ -756,13 +760,13 @@ return redirect()->back()->with('error', 'Failed to place bid. Please try again.
 }
 public function sendGCashImage(Request $request, $id)
 {
-    $verificationRequest = VerificationRequest::findOrFail($id);
+    $verificationRequest = Verify::findOrFail($id);
 
     if (!$verificationRequest) {
         return redirect()->back()->with('error', 'Verification request not found.');
     }
 
-    $gcashImage = $verificationRequest->gcash_image;
+    $attachment = $verificationRequest->gcash_image;
     $gcashTitle = $verificationRequest->title;
 
     $sender = auth()->user();
@@ -773,9 +777,9 @@ public function sendGCashImage(Request $request, $id)
         'from_id' => $sender->id,
         'to_id' => $artistId,
         'body' => "Hello! I've uploaded my GCash image for verification. Please review it.",
-        'attachment' => ($gcashImage) ? json_encode((object)[
-            'new_name' => $gcashImage,
-            'old_name' => htmlentities(trim($gcashImage), ENT_QUOTES, 'UTF-8'),
+        'attachment' => ($attachment) ? json_encode((object)[
+            'new_name' => $attachment,
+            'old_name' => htmlentities(trim($attachment), ENT_QUOTES, 'UTF-8'),
         ]) : null,
     ]);
 
@@ -788,7 +792,9 @@ public function sendGCashImage(Request $request, $id)
             'message' => Chatify::messageCard($messageData, true),
         ]);
     }
+    return back();
 }
+
 
 }
 
