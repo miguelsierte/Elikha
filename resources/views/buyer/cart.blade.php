@@ -106,13 +106,7 @@
                                     <!-- (Bid and Delete) -->
                                     <div class="row">
                                         <div class="col">
-                                            <form action="{{ route('place.bid', ['artworkId' => $artwork->artwork->id]) }}" method="POST">
-                                                @csrf
-                                                <label for="bidAmount">Enter Bid Amount:</label>
-                                                <input type="number" id="bidAmount" name="amount" required>
-                                                            <button type="submit" class="btn btn-dark" onclick="placeBid({{ $artwork->artwork->id }}, $('#bidAmount').val())">Place Bid</button>
-
-                                                                </form>
+                                            <button type="button" class="btn btn-dark bid-button" data-bs-toggle="modal" data-bs-target="#bidModal{{ $artwork->artwork->id }}">Bid</button>
                                         </div>
                                         <div class="col">
                                             <form method="post" action="{{ route('cart.remove', $artwork->artwork_id) }}">
