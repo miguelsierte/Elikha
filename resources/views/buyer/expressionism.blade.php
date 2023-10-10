@@ -1,6 +1,7 @@
 @extends('buyer.master')
 
 @section('Body')
+@include('artistinc.popup')
 @include('buyer.Nav')
 @if(session('error'))
     <div class="alert alert-danger">

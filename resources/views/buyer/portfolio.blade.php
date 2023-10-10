@@ -1,5 +1,5 @@
 @extends('buyer.master')
-
+@include('artistinc.popup')
 @section('Header')
 @include('buyer.Nav')
 <link href="{{ asset('css/main.css') }}" rel="stylesheet">

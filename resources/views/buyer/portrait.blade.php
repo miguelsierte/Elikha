@@ -1,5 +1,5 @@
 @extends('buyer.master')
-
+@include('artistinc.popup')
 @section('Body')
 @include('buyer.Nav')
 @if(session('error'))

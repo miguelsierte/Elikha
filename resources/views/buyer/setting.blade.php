@@ -1,4 +1,5 @@
 @extends('buyer.master')
+@include('artistinc.popup')
 
 @section('Header')
 @include('buyer.Nav') 
