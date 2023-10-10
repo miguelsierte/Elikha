@@ -52,11 +52,7 @@
                 {{-- Display Profile Picture --}}
                 
                 {{-- Form to Update Profile Picture --}}
-                    <form method="POST" action="{{ route('buyer.updateProfilePicture') }}" enctype="multipart/form-data">
-
-                    @csrf
-
-                    <div class="col" style="text-align: center ">
+                    <form method="POST" action="{{ route('buyer.updateProfilePicture') }}" encty                    <div class="col" style="text-align: center ">
                           <div class="profile-image">
                               <img id="profile-image" src="{{ asset('images/'.$user->image) }}" alt="{{ $user->name[0] }}" class="default-profile-image">
                           </div>
@@ -82,15 +78,18 @@
                           </script>
                           
                        </div>
+e" name="image" id="image">
+                    </div>
+
+div>
 
                     <button type="submit" class="btn btn-outline-primary">Save</button>
-                </form>
-                
+                </f
+                    
 
                 {{-- Change Password Section --}}
-                <h4 class="mt-4">Change Password</h4>
-
-                        <form method="POST" action="{{ route('buyer.updateBuyerSetting') }}">
+                <h4 class="mt-4">Change Password</h4>                        <form method="POST" action="{{ route('buyer.updateBuyerSetting') }}">
+">                            
 
 
                     @csrf

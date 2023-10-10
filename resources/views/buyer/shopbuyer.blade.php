@@ -271,7 +271,7 @@
               <div class="row">
                   <div class="col-6">
                       <div class="row image-container">
-                          <img src="{{ asset('storage/attachments/'.$artworks->image) }}" alt="" class="img-fluid">
+                        <img src="{{ asset('images/artworks/image.jpg') }}" alt="Artwork Image">
                       </div>
                   </div>
                   <div class="col-6">

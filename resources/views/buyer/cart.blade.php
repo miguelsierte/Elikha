@@ -86,7 +86,7 @@ z-index: 1000;
             </div>
             
         </div>
-
+if(artwork==auctioned){y}
         <!-- Displaying cart items (70% width) -->
         <div class="row">
             <div class="col-md-7">
